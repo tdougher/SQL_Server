@@ -10,10 +10,10 @@ class SQL:
         self.mid_frame = tkinter.Frame(self.main_window)
         self.bottom_frame = tkinter.Frame(self.main_window)
 
-        self.email_label = tkinter.Label(self.top_frame, text="Login:")
-        self.email_label.pack(side='left')
-        self.email = tkinter.Entry(self.top_frame)
-        self.email.pack(side='right')
+        self.username_label = tkinter.Label(self.top_frame, text="Login:")
+        self.username_label.pack(side='left')
+        self.username = tkinter.Entry(self.top_frame)
+        self.username.pack(side='right')
 
 
         self.password_label = tkinter.Label(self.mid_frame, text='Password:')
@@ -29,7 +29,32 @@ class SQL:
         tkinter.mainloop()
 
     def access_database(self):
-        tkinter.messagebox.showinfo('SQL Server Login', 'You have successfully logged in')
+        login = self.username.get()
+        pw = self.password.get()
+        self.main_window.destroy()
+        login='john'
+        pw = 'MIS4322student'
+
+        prelist={}
+        cn_str=('Driver={SQL Server};''Server=MIS-SQLJB;''Database=School;''UID='+login+';''PWD='+pw+';')
+
+        cn = pyodbc.connect(cn_str)
+        cursor=cn.cursor()
+        cursor.execute ('select * from School.dbo.Course')
+        data = cursor.fetchall()
+        ##print(data)
+courseid = str(input('Course ID: '))
+courseList=[('1045','Calculus',4,7),('1050','Chemistry',4,1)]
+for row in courseList:
+    courseID = row[0]
+    title = row[1]
+    credit = row[2]
+    departmentID=row[3]
+    if courseID == courseid:
+        print(f'Title: {title}',f'Credits:{credit}',f'DeptID:{departmentID}')
+
+            
 
 
-myinstance = SQL()
+
+##myinstance = SQL()
