@@ -1,5 +1,6 @@
 import tkinter
 import tkinter.messagebox
+import pyodbc
 class SQL:
     def __init__(self):
         self.main_window = tkinter.Tk()
@@ -32,7 +33,7 @@ class SQL:
         login = self.username.get()
         pw = self.password.get()
         self.main_window.destroy()
-        login='john'
+        login='tanner_dougherty1'
         pw = 'MIS4322student'
 
         prelist={}
@@ -40,10 +41,19 @@ class SQL:
 
         cn = pyodbc.connect(cn_str)
         cursor=cn.cursor()
-        cursor.execute ('select * from School.dbo.Course')
+        cursor.execute ('select name, budget from School.dbo.Department')
         data = cursor.fetchall()
         ##print(data)
-courseid = str(input('Course ID: '))
+        print(format('Dept Name', '25s'),format('Original Budget','20s'),format('New Budget','15s'), 'Increase')
+        for row in data:
+            name = row[1]
+            budget = row[2]
+            increase = budget*.1
+            new_budget = budget+increase
+            print(f'{name:25.2f}',f'${budget:20.2d}',f'${new_budget:15.2d}',f'${increase:.2d}')
+
+
+'''courseid = str(input('Course ID: '))
 courseList=[('1045','Calculus',4,7),('1050','Chemistry',4,1)]
 for row in courseList:
     courseID = row[0]
@@ -52,9 +62,9 @@ for row in courseList:
     departmentID=row[3]
     if courseID == courseid:
         print(f'Title: {title}',f'Credits:{credit}',f'DeptID:{departmentID}')
-
+'''
             
 
 
 
-##myinstance = SQL()
+myinstance = SQL()
